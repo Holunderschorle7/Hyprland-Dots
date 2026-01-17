@@ -1,14 +1,14 @@
 { config, pkgs, ... }:
 {
   imports =
-    [ 
+    [
       ./hardware-configuration.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; 
+  networking.hostName = "nixos";
 
   networking.networkmanager.enable = true;
 
@@ -42,19 +42,30 @@
   };
 
 
+  services.greetd = {
+   enable = true;
+   settings = {
+    default_session = {
+     user = "maxi";
+     command = "dbus-run-session Hyprland";
+    };
+  };
+};
+
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
   };
+
   services.xserver.videoDrivers = [ "nvidia" ];
   services.flatpak.enable = true;
 
-  programs.gamescope.enable = true; 
+  programs.gamescope.enable = true;
 
   programs.gamemode.enable = true;
   programs.steam.enable = true;
-  programs.hyprland.enable = true;  
-  
+  programs.hyprland.enable = true;
+
   nixpkgs.config = {
     allowUnfree = true;
     supportedSystems = [ "x86_64-linux" "i686-linux" ];
@@ -124,6 +135,6 @@ environment.systemPackages = with pkgs; [
   git
 ];
 
-  system.stateVersion = "25.11"; 
+  system.stateVersion = "25.11";
 
 }
